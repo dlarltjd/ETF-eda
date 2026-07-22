@@ -2,9 +2,10 @@ name: Naver ETF Data Auto Collector & GitHub Pages Deployer
 
 on:
   schedule:
-    # 1분 마다 데이터 수집 및 갱신 (* * * * *)
-    - cron: '* * * * *'
+    # 5분 마다 데이터 수집 및 갱신 (*/5 * * * *)
+    - cron: '*/5 * * * *'
   workflow_dispatch: # GitHub 웹 UI에서 수동 실행 지원
+
 
 jobs:
   collect-and-deploy:
