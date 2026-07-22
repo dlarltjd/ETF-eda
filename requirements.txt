@@ -1,0 +1,8 @@
+# Streamlit 배포를 위한 라이브러리 목록 파일 (requirements.txt)
+streamlit>=1.30.0
+pandas>=2.0.0
+numpy>=1.24.0
+requests>=2.31.0
+plotly>=5.18.0
+scipy>=1.11.0
+statsmodels>=0.14.0
