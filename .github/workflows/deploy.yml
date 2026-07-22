@@ -2,8 +2,8 @@ name: Naver ETF Data Auto Collector & GitHub Pages Deployer
 
 on:
   schedule:
-    # 5분 마다 데이터 수집 및 갱신
-    - cron: '*/5 * * * *'
+    # 1분 마다 데이터 수집 및 갱신 (* * * * *)
+    - cron: '* * * * *'
   workflow_dispatch: # GitHub 웹 UI에서 수동 실행 지원
 
 jobs:
@@ -35,6 +35,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/etf_latest.json
-          git commit -m "auto: update latest ETF dataset [$(date -u +'%Y-%m-%d %H:%M:%S UTC')]" || echo "No changes to commit"
+          git add data/
+          git commit -m "auto: update ETF dataset in data/ folder [$(date -u +'%Y-%m-%d %H:%M:%S UTC')]" || echo "No changes to commit"
           git push
+
