@@ -1,0 +1,40 @@
+name: Naver ETF Data Auto Collector & GitHub Pages Deployer
+
+on:
+  schedule:
+    # 5분 마다 데이터 수집 및 갱신
+    - cron: '*/5 * * * *'
+  workflow_dispatch: # GitHub 웹 UI에서 수동 실행 지원
+
+jobs:
+  collect-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv and dependencies
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          uv pip install --system pandas requests
+
+      - name: Run ETF Data Collection Script
+        run: |
+          python src/save_etf_data.py
+
+      - name: Commit and Push Updated Data
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/etf_latest.json
+          git commit -m "auto: update latest ETF dataset [$(date -u +'%Y-%m-%d %H:%M:%S UTC')]" || echo "No changes to commit"
+          git push

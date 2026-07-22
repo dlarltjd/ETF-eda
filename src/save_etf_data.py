@@ -81,17 +81,56 @@ def save_to_csv(data_list: List[Dict[str, Any]], output_dir: str = "data") -> st
     return file_path
 
 
+def save_to_json(data_list: List[Dict[str, Any]], output_dir: str = "data") -> str:
+    """수집된 ETF 데이터 목록을 JSON 파일 및 latest.json 파일로 저장합니다.
+
+    Args:
+        data_list (List[Dict[str, Any]]): 저장할 ETF 데이터 딕셔너리 리스트.
+        output_dir (str): 저장할 대상 디렉토리 상대 경로. 기본값은 'data'.
+
+    Returns:
+        str: 생성된 JSON 파일의 상대 경로.
+    """
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir, exist_ok=True)
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    latest_json_path = os.path.join(output_dir, "etf_latest.json")
+    timestamp_json_path = os.path.join(output_dir, f"etf_data_{timestamp}.json")
+
+    payload = {
+        "collected_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "result": {
+            "etfItemList": data_list
+        }
+    }
+
+    # latest.json 저장
+    with open(latest_json_path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+
+    # 타임스탬프 파일 저장
+    with open(timestamp_json_path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+
+    print(f"[{datetime.now()}] ETF JSON 데이터 저장 완료: {latest_json_path}")
+    return latest_json_path
+
+
 def main() -> None:
     """ETF 데이터 수집 및 저장 프로세스를 실행하는 메인 함수입니다."""
     try:
         # 데이터 수집
         items = fetch_etf_data()
-        # 데이터 저장
-        saved_file = save_to_csv(items)
-        print(f"성공적으로 데이터를 수집하고 저장했습니다: {saved_file}")
+        # 데이터 CSV 저장
+        saved_csv = save_to_csv(items)
+        # 데이터 JSON 저장 (Stlite/GitHub Pages 정적 수신용)
+        saved_json = save_to_json(items)
+        print(f"성공적으로 데이터를 수집하고 저장했습니다: CSV={saved_csv}, JSON={saved_json}")
     except Exception as e:
         print(f"데이터 수집 중 오류 발생: {e}")
 
 
 if __name__ == "__main__":
     main()
+
