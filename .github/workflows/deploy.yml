@@ -37,5 +37,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add data/
           git commit -m "auto: update ETF dataset in data/ folder [$(date -u +'%Y-%m-%d %H:%M:%S UTC')]" || echo "No changes to commit"
+          git pull --rebase origin main || true
           git push
+
 
