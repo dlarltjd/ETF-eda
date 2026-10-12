@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-10-12 07:53:54",
+  "collected_at": "2026-10-12 17:03:14",
   "result": {
     "etfItemList": [
       {
@@ -7174,10 +7174,10 @@
         "itemcode": "292770",
         "etfTabCode": 6,
         "itemname": "KODEX 국채선물3년인버스",
-        "nowVal": 57965,
-        "risefall": "3",
-        "changeVal": 0,
-        "changeRate": 0.0,
+        "nowVal": 57890,
+        "risefall": "5",
+        "changeVal": -75,
+        "changeRate": -0.13,
         "nav": 57871.0,
         "threeMonthEarnRate": 0.7298,
         "quant": 0,
